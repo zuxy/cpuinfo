@@ -308,8 +308,8 @@ main(void)
             CPUID_FEATURE_DEF(23, "perfctr_core", "Core performance counter"),
             CPUID_FEATURE_DEF(24, "perfctr_nb", "NB performance counter"),
             CPUID_FEATURE_DEF(26, "bpext", "Data breakpoint extensions"),
-            CPUID_FEATURE_DEF(27, "perftsc", "Performance TCS"),
-            CPUID_FEATURE_DEF(28, "perfctr_l2", "L2 performance counter"),
+            CPUID_FEATURE_DEF(27, "ptsc", "Performance TCS"),
+            CPUID_FEATURE_DEF(28, "perfctr_llc", "Last level cache performance counter"),
             CPUID_FEATURE_DEF(29, "mwaitx", "MONITORX/MWAITX"),
             { -1 }
         };
@@ -358,7 +358,7 @@ main(void)
             CPUID_FEATURE_DEF(22, "pcommit", "PCOMMIT instruction"),
             CPUID_FEATURE_DEF(23, "clflushopt", "CLFLUSHOPT instruction"),
             CPUID_FEATURE_DEF(24, "clwb", "CLWB instruction"),
-            CPUID_FEATURE_DEF(25, "ipt", "Intel Processor Trace"),
+            CPUID_FEATURE_DEF(25, "intel_pt", "Intel Processor Trace"),
             CPUID_FEATURE_DEF(26, "avx512pf", "AVX-512 Prefetch"),
             CPUID_FEATURE_DEF(27, "avx512er", "AVX-512 Exponential and Reciprocal"),
             CPUID_FEATURE_DEF(28, "avx512cd", "AVX-512 Conflict Detection"),
@@ -382,9 +382,11 @@ main(void)
             CPUID_FEATURE_DEF(10, "vpclmulqdq", "Carryless Multiplication Quadword"),
             CPUID_FEATURE_DEF(11, "avx512_vnni", "Vector Neural Network Instructions"),
             CPUID_FEATURE_DEF(12, "avx512_bitalg", "Support for VPOPCNT[B,W] and VPSHUF-BITQMB"),
+            CPUID_FEATURE_DEF(13, "tme", "Intel total memory encryption"),
             CPUID_FEATURE_DEF(14, "avx512_vpopcntdq", "POPCNT for vectors of DW/QW"),
             CPUID_FEATURE_DEF(16, "la57", "5-level page tables"),
             CPUID_FEATURE_DEF(22, "rdpid", "Read Processor ID"),
+            CPUID_FEATURE_DEF(25, "cldemote", "CLDEMOTE instruction"),
             CPUID_FEATURE_DEF(30, "sgx_lc", "SGX launch configuration"),
 	    { -1 }
 	};
@@ -394,6 +396,12 @@ main(void)
 	} cap_ext3[] = {
             CPUID_FEATURE_DEF(2, "avx512_4vnniw", "4 Register AVX-512 Neural Network Instructions"),
             CPUID_FEATURE_DEF(3, "avx512_4fmaps", "4 Register AVX-512 Multiply Accumulation Single Precision"),
+            CPUID_FEATURE_DEF(18, "pconfig", "Intel PCONFIG"),
+            CPUID_FEATURE_DEF(26, "spec_ctrl", "Speculation control (IBRS+IBPB)"),
+            CPUID_FEATURE_DEF(27, "intel_stibp", "Single thread indirect branch predictors"),
+            CPUID_FEATURE_DEF(28, "flush_l1d", "Flush L1D cache"),
+            CPUID_FEATURE_DEF(29, "arch_capabilities", "Intel IA32_ARCH_CAPABILITIES MSR"),
+            CPUID_FEATURE_DEF(31, "spec_ctrl_ssbd", "Speculative store bypass disable"),
 	    { -1 }
 	};
 
