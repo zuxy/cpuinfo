@@ -376,7 +376,7 @@ main(void)
             CPUID_FEATURE_DEF(2, "umip", "User-mode instruction prevention"),
             CPUID_FEATURE_DEF(3, "pku", "Protection Keys for Userspace"),
             CPUID_FEATURE_DEF(4, "ospke", "OS Protection Keys Enable"),
-            CPUID_FEATURE_DEF(6, "avx512vbmi2", "AVX-512 Vector Bit Manipulation 2"),
+            CPUID_FEATURE_DEF(6, "avx512_vbmi2", "AVX-512 Vector Bit Manipulation 2"),
             CPUID_FEATURE_DEF(8, "gfni", "Galois Field instructions"),
             CPUID_FEATURE_DEF(9, "vaes", "VEX-256/EVEX AES"),
             CPUID_FEATURE_DEF(10, "vpclmulqdq", "Carryless Multiplication Quadword"),
@@ -387,6 +387,8 @@ main(void)
             CPUID_FEATURE_DEF(16, "la57", "5-level page tables"),
             CPUID_FEATURE_DEF(22, "rdpid", "Read Processor ID"),
             CPUID_FEATURE_DEF(25, "cldemote", "CLDEMOTE instruction"),
+            CPUID_FEATURE_DEF(27, "movdiri", "MOVDIRI instruction"),
+            CPUID_FEATURE_DEF(28, "movdir64b", "MOVDIR64B instruction"),
             CPUID_FEATURE_DEF(30, "sgx_lc", "SGX launch configuration"),
 	    { -1 }
 	};
@@ -396,6 +398,8 @@ main(void)
 	} cap_ext3[] = {
             CPUID_FEATURE_DEF(2, "avx512_4vnniw", "4 Register AVX-512 Neural Network Instructions"),
             CPUID_FEATURE_DEF(3, "avx512_4fmaps", "4 Register AVX-512 Multiply Accumulation Single Precision"),
+            CPUID_FEATURE_DEF(10, "md_clear", "VERW clears CPU buffers"),
+            CPUID_FEATURE_DEF(13, "tsx_force_abort", "TSX_FORCE_ABORT"),
             CPUID_FEATURE_DEF(18, "pconfig", "Intel PCONFIG"),
             CPUID_FEATURE_DEF(26, "spec_ctrl", "Speculation control (IBRS+IBPB)"),
             CPUID_FEATURE_DEF(27, "intel_stibp", "Single thread indirect branch predictors"),
