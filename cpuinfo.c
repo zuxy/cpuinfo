@@ -181,7 +181,7 @@ main(void)
         ext_flags2 = regs_ext.ecx;
         ext_flags3 = regs_ext.edx;
     } else {
-        ext_flags = ext_flags2 = 0;
+        ext_flags = ext_flags2 = ext_flags3 = 0;
     }
 
     if (max_cpuid >= 0xd) {
@@ -524,6 +524,11 @@ main(void)
         for (i = 0; cap_ext2[i].bit >= 0; i++) {
             if (ext_flags2 & (1 << cap_ext2[i].bit)) {
                 printf(" %s", cap_ext2[i].desc);
+            }
+	}
+        for (i = 0; cap_ext3[i].bit >= 0; i++) {
+            if (ext_flags3 & (1 << cap_ext3[i].bit)) {
+                printf(" %s", cap_ext3[i].desc);
             }
 	}
 
