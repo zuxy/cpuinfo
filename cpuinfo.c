@@ -386,9 +386,11 @@ main(void)
             CPUID_FEATURE_DEF(14, "avx512_vpopcntdq", "POPCNT for vectors of DW/QW"),
             CPUID_FEATURE_DEF(16, "la57", "5-level page tables"),
             CPUID_FEATURE_DEF(22, "rdpid", "Read Processor ID"),
+            CPUID_FEATURE_DEF(24, "bus_lock_detect", "Bus lock detect"),
             CPUID_FEATURE_DEF(25, "cldemote", "CLDEMOTE instruction"),
             CPUID_FEATURE_DEF(27, "movdiri", "MOVDIRI instruction"),
             CPUID_FEATURE_DEF(28, "movdir64b", "MOVDIR64B instruction"),
+            CPUID_FEATURE_DEF(29, "enqcmd", "ENQCMD and ENQCMDS instructions"),
             CPUID_FEATURE_DEF(30, "sgx_lc", "SGX launch configuration"),
 	    { -1 }
 	};
@@ -402,8 +404,10 @@ main(void)
             CPUID_FEATURE_DEF(8, "avx512_vp2intersect", "AVX-512 Intersect for D/Q"),
             CPUID_FEATURE_DEF(9, "srbds_ctrl", "SRBDS mitigation MSR"),
             CPUID_FEATURE_DEF(10, "md_clear", "VERW clears CPU buffers"),
+            CPUID_FEATURE_DEF(11, "rtm_always_abort", "RTM transaction always aborts"),
             CPUID_FEATURE_DEF(13, "tsx_force_abort", "TSX_FORCE_ABORT"),
             CPUID_FEATURE_DEF(14, "serialize", "SERIALIZE instruction"),
+            CPUID_FEATURE_DEF(15, "hybrid_cpu", "This part has CPUs of more than one type"),
             CPUID_FEATURE_DEF(16, "tsxldtrk", "TSX  suspend load address tracking"),
             CPUID_FEATURE_DEF(18, "pconfig", "Intel PCONFIG"),
             CPUID_FEATURE_DEF(19, "arch_lbr", "Intel ARCH LBR"),
@@ -425,6 +429,7 @@ main(void)
             CPUID_FEATURE_DEF(1, "xsavec", "XSAVEC"),
             CPUID_FEATURE_DEF(2, "xgetbv1", "XGETBV with ECX = 1"),
             CPUID_FEATURE_DEF(3, "xsaves", "XSAVES/XRSTORS"),
+            CPUID_FEATURE_DEF(4, "xfd", "Extended feature disabling"),
 	    { -1 }
 	};
         static struct {
@@ -439,7 +444,7 @@ main(void)
             CPUID_FEATURE_DEF(7, "hwp", "Hardware P-states"),
             CPUID_FEATURE_DEF(8, "hwp_notify", "HWP Notification"),
             CPUID_FEATURE_DEF(9, "hwp_act_window", "HWP Activity Window"),
-            CPUID_FEATURE_DEF(10, "hwp_epp", "HWP Energy Performance Preference"), 
+            CPUID_FEATURE_DEF(10, "hwp_epp", "HWP Energy Performance Preference"),
             CPUID_FEATURE_DEF(11, "hwp_pkg_req", "HWP Package Level Request"),
 	    { -1 }
 	};
