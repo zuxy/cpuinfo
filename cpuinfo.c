@@ -21,7 +21,7 @@
  */
 
 #include <stdio.h>
-#include <sys/time.h>
+#include <time.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -549,21 +549,21 @@ main(void)
 
         if (regs.edx & (1 << 4)) {
             int64_t tsc_start, tsc_end;
-            struct timeval tv_start, tv_end;
+            struct timespec ts_start, ts_end;
             int usec_delay;
 
             tsc_start = rdtsc();
-            gettimeofday(&tv_start, NULL);
+            timespec_get(&ts_start, TIME_UTC);
 #ifdef  MISSING_USLEEP
             sleep(1);
 #else
             usleep(100000);
 #endif
             tsc_end = rdtsc();
-            gettimeofday(&tv_end, NULL);
+            timespec_get(&ts_end, TIME_UTC);
 
-            usec_delay = 1000000 * (tv_end.tv_sec - tv_start.tv_sec)
-                + (tv_end.tv_usec - tv_start.tv_usec);
+            usec_delay = 1000000 * (ts_end.tv_sec - ts_start.tv_sec)
+                + (ts_end.tv_nsec - ts_start.tv_nsec) / 1000;
 
             printf("cpu MHz\t\t: %.3f\n",
                    (double)(tsc_end-tsc_start) / usec_delay);
