@@ -113,10 +113,12 @@ main(void)
     unsigned max_via_cpuid;
     unsigned int amd_flags;
     unsigned int amd_flags2;
+    unsigned int amd_flags3 = 0;
     unsigned int via_flags;
     unsigned int ext_flags;
     unsigned int ext_flags2;
     unsigned int ext_flags3;
+    unsigned int ext_flags4 = 0;
     unsigned int state_flags;
     unsigned int tm_flags;
     const char *model_name = NULL;
@@ -153,6 +155,9 @@ main(void)
             while (*model_name == ' ') {
                 model_name++;
             }
+	    if (max_ext_cpuid >= (1<<31) + 8) {
+		    amd_flags3 = cpuid((1<<31) + 8, 0).ebx;
+	    }
         }
     } else {
         amd_flags = 0;
@@ -180,6 +185,8 @@ main(void)
         ext_flags = regs_ext.ebx;
         ext_flags2 = regs_ext.ecx;
         ext_flags3 = regs_ext.edx;
+	if (regs_ext.eax >= 1)
+	    ext_flags4 = cpuid(7, 1).eax;
     } else {
         ext_flags = ext_flags2 = ext_flags3 = 0;
     }
@@ -316,6 +323,29 @@ main(void)
         static struct {
             int bit;
             char *desc;
+        } cap_amd3[] = {
+            CPUID_FEATURE_DEF(0, "clzero", "CLZERO instruction"),
+            CPUID_FEATURE_DEF(1, "irperf", "Instructions Retired Count"),
+            CPUID_FEATURE_DEF(2, "xsaveerptr", "Always save/restore FP error pointers"),
+            CPUID_FEATURE_DEF(4, "rdpru", "Read processor register at user level"),
+            CPUID_FEATURE_DEF(9, "wbnoinvd", "WBNOINVD instruction"),
+            CPUID_FEATURE_DEF(12, "amd_ibpb", "Indirect Branch Prediction Barrier"),
+            CPUID_FEATURE_DEF(14, "amd_ibrs", "Indirect Branch Restricted Speculation"),
+            CPUID_FEATURE_DEF(15, "amd_stibp", "Single Thread Indirect Branch Predictors"),
+            CPUID_FEATURE_DEF(17, "amd_stibp_always_on", "Single Thread Indirect Branch Predictors always-on preferred"),
+            CPUID_FEATURE_DEF(23, "amd_ppin", "Protected Processor Inventory Number"),
+            CPUID_FEATURE_DEF(24, "amd_ssbd", "Speculative Store Bypass Disable"),
+            CPUID_FEATURE_DEF(25, "virt_ssbd", "Virtualized Speculative Store Bypass Disable"),
+            CPUID_FEATURE_DEF(26, "amd_ssb_no", "Speculative Store Bypass is fixed in hardware."),
+            CPUID_FEATURE_DEF(27, "cppc", "Collaborative Processor Performance Control"),
+            CPUID_FEATURE_DEF(28, "amd_psfd", "Predictive Store Forwarding Disable"),
+            CPUID_FEATURE_DEF(29, "btc_no", "Not vulnerable to Branch Type Confusion"),
+            CPUID_FEATURE_DEF(30, "brs", "Branch Sampling available"),
+            { -1 }
+        };
+        static struct {
+            int bit;
+            char *desc;
         } cap_via[] = {
             CPUID_FEATURE_DEF(2, "rng", "Random Number Generator Present"),
             CPUID_FEATURE_DEF(3, "rng_en", "Random Number Generator Enabled"),
@@ -376,6 +406,7 @@ main(void)
             CPUID_FEATURE_DEF(2, "umip", "User-mode instruction prevention"),
             CPUID_FEATURE_DEF(3, "pku", "Protection Keys for Userspace"),
             CPUID_FEATURE_DEF(4, "ospke", "OS Protection Keys Enable"),
+            CPUID_FEATURE_DEF(5, "waitpkg", "UMONITOR/UMWAIT/TPAUSE Instructions"),
             CPUID_FEATURE_DEF(6, "avx512_vbmi2", "AVX-512 Vector Bit Manipulation 2"),
             CPUID_FEATURE_DEF(8, "gfni", "Galois Field instructions"),
             CPUID_FEATURE_DEF(9, "vaes", "VEX-256/EVEX AES"),
@@ -408,10 +439,14 @@ main(void)
             CPUID_FEATURE_DEF(13, "tsx_force_abort", "TSX_FORCE_ABORT"),
             CPUID_FEATURE_DEF(14, "serialize", "SERIALIZE instruction"),
             CPUID_FEATURE_DEF(15, "hybrid_cpu", "This part has CPUs of more than one type"),
-            CPUID_FEATURE_DEF(16, "tsxldtrk", "TSX  suspend load address tracking"),
+            CPUID_FEATURE_DEF(16, "tsxldtrk", "TSX suspend load address tracking"),
             CPUID_FEATURE_DEF(18, "pconfig", "Intel PCONFIG"),
             CPUID_FEATURE_DEF(19, "arch_lbr", "Intel ARCH LBR"),
+            CPUID_FEATURE_DEF(20, "ibt", "Indirect Branch Tracking"),
+            CPUID_FEATURE_DEF(22, "amx_bf16", "AMX bf16 Support"),
             CPUID_FEATURE_DEF(23, "avx512_fp16", "AVX512 FP16"),
+            CPUID_FEATURE_DEF(24, "amx_tile", "AMX tile support"),
+            CPUID_FEATURE_DEF(25, "amx_int8", "AMX int8 Support"),
             CPUID_FEATURE_DEF(26, "spec_ctrl", "Speculation control (IBRS+IBPB)"),
             CPUID_FEATURE_DEF(27, "intel_stibp", "Single thread indirect branch predictors"),
             CPUID_FEATURE_DEF(28, "flush_l1d", "Flush L1D cache"),
@@ -420,6 +455,23 @@ main(void)
             CPUID_FEATURE_DEF(31, "spec_ctrl_ssbd", "Speculative store bypass disable"),
 	    { -1 }
 	};
+        static struct {
+            int bit;
+            char *desc;
+        } cap_ext4[] = {
+            CPUID_FEATURE_DEF(4, "avx_vnni", "AVX VNNI instructions"),
+            CPUID_FEATURE_DEF(5, "avx512_bf16", "AVX512 BFLOAT16 instructions"),
+            CPUID_FEATURE_DEF(7, "cmpccxadd", "AVX512 BFLOAT16 instructions"),
+            CPUID_FEATURE_DEF(8, "arch_perfmon_ext", "Intel Architectural PerfMon Extension"),
+            CPUID_FEATURE_DEF(10, "fzrm", "Fast zero-length REP MOVSB"),
+            CPUID_FEATURE_DEF(11, "fsrs", "Fast short REP STOSB"),
+            CPUID_FEATURE_DEF(12, "fsrc", "Fast short REP {CMPSB,SCASB}"),
+            CPUID_FEATURE_DEF(18, "lkgs", "Load \"kernel\" (userspace) GS"),
+            CPUID_FEATURE_DEF(21, "amx_fp16", "AMX fp16 Support"),
+            CPUID_FEATURE_DEF(23, "avx_ifma", "Support for VPMADD52[H,L]UQ"),
+            CPUID_FEATURE_DEF(26, "lam", "Linear Address Masking"),
+            { -1 }
+        };
 
         static struct {
             int bit;
@@ -446,6 +498,7 @@ main(void)
             CPUID_FEATURE_DEF(9, "hwp_act_window", "HWP Activity Window"),
             CPUID_FEATURE_DEF(10, "hwp_epp", "HWP Energy Performance Preference"),
             CPUID_FEATURE_DEF(11, "hwp_pkg_req", "HWP Package Level Request"),
+            CPUID_FEATURE_DEF(19, "hfi", "Hardware Feedback Interface"),
 	    { -1 }
 	};
 
@@ -514,6 +567,11 @@ main(void)
                 printf(" %s", cap_amd2[i].desc);
             }
         }
+        for (i = 0; cap_amd3[i].bit >= 0; i++) {
+            if (amd_flags3 & (1 << cap_amd3[i].bit)) {
+                printf(" %s", cap_amd3[i].desc);
+            }
+	}
         for (i = 0; cap_via[i].bit >= 0; i++) {
             if (via_flags & (1 << cap_via[i].bit)) {
                 printf(" %s", cap_via[i].desc);
@@ -542,6 +600,11 @@ main(void)
         for (i = 0; cap_ext3[i].bit >= 0; i++) {
             if (ext_flags3 & (1 << cap_ext3[i].bit)) {
                 printf(" %s", cap_ext3[i].desc);
+            }
+	}
+        for (i = 0; cap_ext4[i].bit >= 0; i++) {
+            if (ext_flags4 & (1 << cap_ext4[i].bit)) {
+                printf(" %s", cap_ext4[i].desc);
             }
 	}
 
