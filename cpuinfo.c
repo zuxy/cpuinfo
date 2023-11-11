@@ -155,9 +155,9 @@ main(void)
             while (*model_name == ' ') {
                 model_name++;
             }
-	    if (max_ext_cpuid >= (1<<31) + 8) {
-		    amd_flags3 = cpuid((1<<31) + 8, 0).ebx;
-	    }
+            if (max_ext_cpuid >= (1<<31) + 8) {
+                    amd_flags3 = cpuid((1<<31) + 8, 0).ebx;
+            }
         }
     } else {
         amd_flags = 0;
@@ -174,10 +174,10 @@ main(void)
     }
 
     if (max_cpuid >= 6) {
-	regs_ext = cpuid(6, 0);
-	tm_flags = regs_ext.eax;
+        regs_ext = cpuid(6, 0);
+        tm_flags = regs_ext.eax;
     } else {
-	tm_flags = 0;
+        tm_flags = 0;
     }
 
     if (max_cpuid >= 7) {
@@ -185,8 +185,8 @@ main(void)
         ext_flags = regs_ext.ebx;
         ext_flags2 = regs_ext.ecx;
         ext_flags3 = regs_ext.edx;
-	if (regs_ext.eax >= 1)
-	    ext_flags4 = cpuid(7, 1).eax;
+        if (regs_ext.eax >= 1)
+            ext_flags4 = cpuid(7, 1).eax;
     } else {
         ext_flags = ext_flags2 = ext_flags3 = 0;
     }
@@ -197,7 +197,7 @@ main(void)
     } else {
         state_flags = 0;
     }
-	
+
     if (max_cpuid >= 1) {
         static struct {
             int bit;
@@ -400,7 +400,7 @@ main(void)
         static struct {
             int bit;
             char *desc;
-	} cap_ext2[] = {
+        } cap_ext2[] = {
             CPUID_FEATURE_DEF(0, "prefetchwt1", "PREFETCHWT1 Instruction"),
             CPUID_FEATURE_DEF(1, "avx512vbmi", "AVX-512 Vector Bit Manipulation"),
             CPUID_FEATURE_DEF(2, "umip", "User-mode instruction prevention"),
@@ -423,12 +423,12 @@ main(void)
             CPUID_FEATURE_DEF(28, "movdir64b", "MOVDIR64B instruction"),
             CPUID_FEATURE_DEF(29, "enqcmd", "ENQCMD and ENQCMDS instructions"),
             CPUID_FEATURE_DEF(30, "sgx_lc", "SGX launch configuration"),
-	    { -1 }
-	};
+            { -1 }
+        };
         static struct {
             int bit;
             char *desc;
-	} cap_ext3[] = {
+        } cap_ext3[] = {
             CPUID_FEATURE_DEF(2, "avx512_4vnniw", "4 Register AVX-512 Neural Network Instructions"),
             CPUID_FEATURE_DEF(3, "avx512_4fmaps", "4 Register AVX-512 Multiply Accumulation Single Precision"),
             CPUID_FEATURE_DEF(4, "fsrm", "Fast short REP MOV"),
@@ -453,8 +453,8 @@ main(void)
             CPUID_FEATURE_DEF(29, "arch_capabilities", "Intel IA32_ARCH_CAPABILITIES MSR"),
             CPUID_FEATURE_DEF(30, "core_capabilities", "Intel IA32_CORE_CAPABILITIES MSR"),
             CPUID_FEATURE_DEF(31, "spec_ctrl_ssbd", "Speculative store bypass disable"),
-	    { -1 }
-	};
+            { -1 }
+        };
         static struct {
             int bit;
             char *desc;
@@ -476,18 +476,18 @@ main(void)
         static struct {
             int bit;
             char *desc;
-	} cap_state[] = {
+        } cap_state[] = {
             CPUID_FEATURE_DEF(0, "xsaveopt", "XSAVEOPT"),
             CPUID_FEATURE_DEF(1, "xsavec", "XSAVEC"),
             CPUID_FEATURE_DEF(2, "xgetbv1", "XGETBV with ECX = 1"),
             CPUID_FEATURE_DEF(3, "xsaves", "XSAVES/XRSTORS"),
             CPUID_FEATURE_DEF(4, "xfd", "Extended feature disabling"),
-	    { -1 }
-	};
+            { -1 }
+        };
         static struct {
             int bit;
             char *desc;
-	} cap_tm[] = {
+        } cap_tm[] = {
             CPUID_FEATURE_DEF(0, "dtherm", "Digital Thermal Sensor"),
             CPUID_FEATURE_DEF(1, "ida", "Intel Dynamic Acceleration"),
             CPUID_FEATURE_DEF(2, "arat", "Alaways Running APIC Timer"),
@@ -499,8 +499,8 @@ main(void)
             CPUID_FEATURE_DEF(10, "hwp_epp", "HWP Energy Performance Preference"),
             CPUID_FEATURE_DEF(11, "hwp_pkg_req", "HWP Package Level Request"),
             CPUID_FEATURE_DEF(19, "hfi", "Hardware Feedback Interface"),
-	    { -1 }
-	};
+            { -1 }
+        };
 
         unsigned int family, model, stepping;
 
@@ -517,11 +517,11 @@ main(void)
         printf("cpu family\t: %d\n"
                "model\t\t: %d\n"
                "stepping\t: %d\n"
-	       "cpuid level\t: %d\n",
+               "cpuid level\t: %d\n",
                family,
                model,
                stepping,
-	       max_cpuid);
+               max_cpuid);
 
         if (strstr(idstr, "Intel") && !model_name) {
             if (family == 6 && model == 0xb && stepping == 1)
@@ -571,7 +571,7 @@ main(void)
             if (amd_flags3 & (1 << cap_amd3[i].bit)) {
                 printf(" %s", cap_amd3[i].desc);
             }
-	}
+        }
         for (i = 0; cap_via[i].bit >= 0; i++) {
             if (via_flags & (1 << cap_via[i].bit)) {
                 printf(" %s", cap_via[i].desc);
@@ -581,7 +581,7 @@ main(void)
             if (tm_flags & (1 << cap_tm[i].bit)) {
                 printf(" %s", cap_tm[i].desc);
             }
-	}
+        }
         for (i = 0; cap_ext[i].bit >= 0; i++) {
             if (ext_flags & (1 << cap_ext[i].bit)) {
                 printf(" %s", cap_ext[i].desc);
@@ -596,17 +596,17 @@ main(void)
             if (ext_flags2 & (1 << cap_ext2[i].bit)) {
                 printf(" %s", cap_ext2[i].desc);
             }
-	}
+        }
         for (i = 0; cap_ext3[i].bit >= 0; i++) {
             if (ext_flags3 & (1 << cap_ext3[i].bit)) {
                 printf(" %s", cap_ext3[i].desc);
             }
-	}
+        }
         for (i = 0; cap_ext4[i].bit >= 0; i++) {
             if (ext_flags4 & (1 << cap_ext4[i].bit)) {
                 printf(" %s", cap_ext4[i].desc);
             }
-	}
+        }
 
         printf("\n");
 
